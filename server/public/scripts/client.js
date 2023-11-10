@@ -3,7 +3,7 @@ console.log('JS is sourced!');
 // get items on page load
 getItems();
 
-// get route
+// get items
 function getItems() {
     axios({
         method: 'GET',
@@ -13,6 +13,26 @@ function getItems() {
         renderItems(response.data);
       }).catch(function (error) {
         console.log('error in todos get', error);
+      });
+};
+
+// add new items
+function addItem() {
+    const itemToSend = {
+        text: document.getElementById('toDoTextInput').value, 
+      };
+      console.log('Adding item', itemToSend);
+      // Send the new item to the server as data
+      axios({
+        method: 'POST',
+        url: '/todos',
+        data: itemToSend
+      }).then((response) => {
+        console.log(response.data);
+        getItems();
+      }).catch((error) => {
+        console.log('error in item post', error); 
+        alert('Error adding item. Please try again later.')       
       });
 };
 

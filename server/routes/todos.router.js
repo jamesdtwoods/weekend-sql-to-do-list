@@ -16,5 +16,25 @@ pool.query(sqlQueryText)
     })
 });
 
+// post route
+router.post('/', (req, res) => {
+    console.log('POST /todos got a request, here is req.body:')
+    console.log(req.body)
+    const sqlQueryText = `
+      INSERT INTO "todos"
+        ("text", "isComplete")
+        VALUES
+        ($1, false);
+    `
+    const sqlValues = [req.body.text]
+    pool.query(sqlQueryText, sqlValues)
+      .then((dbResult) => {
+        res.sendStatus(201)
+      }).catch((dbError) => {
+        console.log('POST /todos SQL query failed:', dbError)
+        res.sendStatus(500)
+      })
+});
+
 
 module.exports = router;
