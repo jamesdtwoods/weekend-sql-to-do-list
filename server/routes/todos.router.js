@@ -57,7 +57,7 @@ router.put('/:id', (req, res) => {
     const sqlQueryText = 
     `
     UPDATE "todos"
-      SET "isComplete" = true
+      SET "isComplete" = NOT "isComplete"
       WHERE "id" = ($1);
     `
     const sqlValues = [req.params.id];

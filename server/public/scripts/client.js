@@ -47,10 +47,9 @@ function renderItems(itemLlist) {
     // Add all songs to table
     for (let item of itemLlist) {
         itemTableBody.innerHTML += `
-        <tr data-testid="toDoItem" data-itemId="${item.id}" class="not-complete">
+        <tr data-testid="toDoItem" data-itemId="${item.id}" ${item.isComplete != true ? `class="not-complete"` : `class="completed"`}>
             <td>${item.text}</td>
-            <td>${item.isComplete}</td>
-            <td><button data-testid="completeButton" id="mark-complete" onclick="markComplete(event)">Mark Complete</button></td>
+            <td>${item.isComplete != true ? `<button data-testid="completeButton" id="mark-complete" onclick="markComplete(event)">Check it off</button>` : `<button data-testid="completeButton" id="mark-complete" onclick="markComplete(event)">Whoops, not done</button>`}</td>
             <td><button data-testid="deleteButton" id="delete-item" onclick="deleteItem(event)">Delete Item</button></td>
         </tr>`;
     };
