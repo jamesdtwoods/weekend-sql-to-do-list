@@ -5,7 +5,7 @@ const pool = require('../modules/pool');
 router.get('/', (req, res) => {
 const sqlQueryText = `
     SELECT * FROM "todos"
-    ORDER BY "isComplete", "id";
+    ORDER BY "isComplete", "dateCompleted";
 `;
 pool.query(sqlQueryText)
     .then((dbResult) => {
@@ -57,7 +57,7 @@ router.put('/:id', (req, res) => {
     const sqlQueryText = 
     `
     UPDATE "todos"
-      SET "isComplete" = NOT "isComplete"
+    SET "isComplete" = NOT "isComplete", "dateCompleted" = NOW()
       WHERE "id" = ($1);
     `
     const sqlValues = [req.params.id];

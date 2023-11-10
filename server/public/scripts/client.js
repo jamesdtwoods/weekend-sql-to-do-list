@@ -48,7 +48,7 @@ function renderItems(itemLlist) {
     for (let item of itemLlist) {
         itemTableBody.innerHTML += `
         <tr data-testid="toDoItem" data-itemId="${item.id}" ${item.isComplete != true ? `class="not-complete"` : `class="completed"`}>
-            <td><li>${item.text}</li></td>
+            <td>${item.isComplete != true ? `<strong>${item.text}</strong>` : `${item.text} --- ✅ at: ${item.dateCompleted}`}</td>
             <td>${item.isComplete != true ? `<button data-testid="completeButton" id="mark-complete" onclick="markComplete(event)" class="btn btn-success">Check it off</button>` : `<button data-testid="completeButton" id="mark-complete" onclick="markComplete(event)" class="btn btn-warning">Whoops, not done</button>`}</td>
             <td><button data-testid="deleteButton" id="delete-item" data-bs-toggle="modal" data-bs-target="#exampleModal${item.id}" class="btn btn-danger">Delete Item</button></td>
 
@@ -74,7 +74,7 @@ function renderItems(itemLlist) {
     };
 };
 
-
+  
 
 
 
@@ -111,3 +111,20 @@ function deleteItem(itemIdFromRow) {
         alert('Error deleteing item. Please try again later.');
     });
 };
+
+
+
+
+
+// function myDateParse(s) {
+//     let b = s.split(/\D/);
+//     --b[1];                  // Adjust month number
+//     b[6] = b[6].substr(0,3); // Microseconds to milliseconds
+//     return new Date(Date.UTC(...b));
+// }
+
+// let dateCompleted = item.dateCompleted;
+// let dateFormatted = new Date(dateCompleted.replace(' ', 'T'));
+// console.log(dateFormatted);
+// let dateFormatedMoment = moment(dateFormatted)
+// console.log(dateFormatedMoment);
