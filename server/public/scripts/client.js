@@ -46,9 +46,25 @@ function renderItems(itemLlist) {
     itemTableBody.innerHTML = '';
     // Add all songs to table
     for (let item of itemLlist) {
+        let dateCompleted = item.dateCompleted;
+        function formatCourseDate(date) {
+            const options = {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                second: "numeric",
+                hour12: true,
+                timeZone: "America/Chicago",
+              };
+            const dateObj = new Date(date);
+            return new Intl.DateTimeFormat('en-US', options).format(dateObj);
+        };
+        let dateFormatted = formatCourseDate(dateCompleted);
         itemTableBody.innerHTML += `
         <tr data-testid="toDoItem" data-itemId="${item.id}" ${item.isComplete != true ? `class="not-complete"` : `class="completed"`}>
-            <td>${item.isComplete != true ? `<strong>${item.text}</strong>` : `${item.text} --- ✅ at: ${item.dateCompleted}`}</td>
+            <td>${item.isComplete != true ? `<strong>${item.text}</strong>` : `${item.text} --- ✅ on: ${dateFormatted}`}</td>
             <td>${item.isComplete != true ? `<button data-testid="completeButton" id="mark-complete" onclick="markComplete(event)" class="btn btn-success">Check it off</button>` : `<button data-testid="completeButton" id="mark-complete" onclick="markComplete(event)" class="btn btn-warning">Whoops, not done</button>`}</td>
             <td><button data-testid="deleteButton" id="delete-item" data-bs-toggle="modal" data-bs-target="#exampleModal${item.id}" class="btn btn-danger">Delete Item</button></td>
 
@@ -128,3 +144,13 @@ function deleteItem(itemIdFromRow) {
 // console.log(dateFormatted);
 // let dateFormatedMoment = moment(dateFormatted)
 // console.log(dateFormatedMoment);
+
+// console.log(typeof dateCompleted);
+// console.log('before conversion', dateCompleted);
+// let newDate = dateCompleted.replace('T', ' ').replace('Z', '');
+// console.log('after conversion', newDate);
+// let dateFormatted = newDate.slice(0, 10);
+// let timeFormatted = newDate.slice(11, 16);
+// console.log('just date', dateFormatted);
+// console.log('just time', timeFormatted);
+{/* <td>${item.isComplete != true ? `<strong>${item.text}</strong>` : `${item.text} --- ✅ at: ${timeFormatted} on ${dateFormatted}`}</td> */}
