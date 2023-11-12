@@ -22,11 +22,11 @@ router.post('/', (req, res) => {
     console.log(req.body);
     const sqlQueryText = `
       INSERT INTO "todos"
-        ("text", "isComplete")
+        ("text", "isComplete", "type")
         VALUES
-        ($1, false);
+        ($1, false, $2);
     `
-    const sqlValues = [req.body.text];
+    const sqlValues = [req.body.text, req.body.type];
     pool.query(sqlQueryText, sqlValues)
       .then((dbResult) => {
         res.sendStatus(201);

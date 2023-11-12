@@ -17,13 +17,16 @@ function getItems() {
 };
 
 // add new items
-function addItem() {
+function addItem(event) {
+    event.preventDefault();
     const itemToSend = {
         text: document.getElementById('toDoTextInput').value,
+        type: document.getElementById('toDoTypeInput').value
     };
     console.log('Adding item', itemToSend);
     // clear inputs
     document.getElementById('toDoTextInput').value = '';
+    document.getElementById('toDoTypeInput').value = '';
     // Send the new item to the server as data
     axios({
         method: 'POST',
@@ -46,25 +49,11 @@ function renderItems(itemLlist) {
     itemTableBody.innerHTML = '';
     // Add all songs to table
     for (let item of itemLlist) {
-        let dateCompleted = item.dateCompleted;
-        function formatCourseDate(date) {
-            const options = {
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-                second: "numeric",
-                hour12: true,
-                timeZone: "America/Chicago",
-              };
-            const dateObj = new Date(date);
-            return new Intl.DateTimeFormat('en-US', options).format(dateObj);
-        };
-        let dateFormatted = formatCourseDate(dateCompleted);
+        let dateFormatted = formatDate(item.dateCompleted);
         itemTableBody.innerHTML += `
         <tr data-testid="toDoItem" data-itemId="${item.id}" ${item.isComplete != true ? `class="not-complete"` : `class="completed"`}>
             <td>${item.isComplete != true ? `<strong>${item.text}</strong>` : `${item.text} --- ✅ on: ${dateFormatted}`}</td>
+            <td>${item.type}</td>
             <td>${item.isComplete != true ? `<button data-testid="completeButton" id="mark-complete" onclick="markComplete(event)" class="btn btn-success">Check it off</button>` : `<button data-testid="completeButton" id="mark-complete" onclick="markComplete(event)" class="btn btn-warning">Whoops, not done</button>`}</td>
             <td><button data-testid="deleteButton" id="delete-item" data-bs-toggle="modal" data-bs-target="#exampleModal${item.id}" class="btn btn-danger">Delete Item</button></td>
 
@@ -90,10 +79,6 @@ function renderItems(itemLlist) {
     };
 };
 
-  
-
-
-
 // mark items complete 
 function markComplete(event) {
     let itemId = event.target.closest('tr').getAttribute('data-itemId');
@@ -109,8 +94,6 @@ function markComplete(event) {
         alert('Error marking complete. Please try again later.');
     });
 };
-
-
 
 // delete items
 function deleteItem(itemIdFromRow) {
@@ -128,8 +111,21 @@ function deleteItem(itemIdFromRow) {
     });
 };
 
-
-
+// date formater
+function formatDate(date) {
+    const options = {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: true,
+        timeZone: "America/Chicago",
+      };
+    const dateObj = new Date(date);
+    return new Intl.DateTimeFormat('en-US', options).format(dateObj);
+};
 
 
 // function myDateParse(s) {
